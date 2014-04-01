@@ -6,6 +6,23 @@
 #
 # Outputs:
 #   COMMON_JAVAC -- Java compiler command with common arguments
+<<<<<<< HEAD
+=======
+#
+
+ifneq ($(LEGACY_USE_JAVA6),)
+common_flags := -target 1.5 -Xmaxerrs 9999999
+else
+common_flags := -source 1.7 -target 1.7 -Xmaxerrs 9999999
+endif
+
+# Use the indexer wrapper to index the codebase instead of the javac compiler
+ifeq ($(ALTERNATE_JAVAC),)
+JAVACC := javac
+else
+JAVACC := $(ALTERNATE_JAVAC)
+endif
+>>>>>>> c84889b... Build with java7 by default.
 
 # Whatever compiler is on this system.
 ifeq ($(BUILD_OS), windows)

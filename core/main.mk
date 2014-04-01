@@ -103,7 +103,11 @@ include $(BUILD_SYSTEM)/cleanbuild.mk
 # Include the google-specific config
 -include vendor/google/build/config.mk
 
+<<<<<<< HEAD
 VERSION_CHECK_SEQUENCE_NUMBER := 3
+=======
+VERSION_CHECK_SEQUENCE_NUMBER := 5
+>>>>>>> c84889b... Build with java7 by default.
 -include $(OUT_DIR)/versions_checked.mk
 ifneq ($(VERSION_CHECK_SEQUENCE_NUMBER),$(VERSIONS_CHECKED))
 
@@ -140,8 +144,71 @@ $(warning ************************************************************)
 $(error Directory names containing spaces not supported)
 endif
 
+<<<<<<< HEAD
 # Check for the corrent jdk
 ifneq ($(shell java -version 2>&1 | grep -i openjdk),)
+=======
+java_version_str := $(shell unset _JAVA_OPTIONS && java -version 2>&1)
+javac_version_str := $(shell unset _JAVA_OPTIONS && javac -version 2>&1)
+
+# Check for the correct version of java, should be 1.7 by
+# default, and 1.6 if LEGACY_USE_JAVA6 is set.
+ifeq ($(LEGACY_USE_JAVA6),)
+required_version := "1.7.x"
+required_javac_version := "1.7"
+java_version := $(shell echo '$(java_version_str)' | grep '^java .*[ "]1\.7[\. "$$]')
+javac_version := $(shell echo '$(javac_version_str)' | grep '[ "]1\.7[\. "$$]')
+else # if LEGACY_USE_JAVA6
+required_version := "1.6.x"
+required_javac_version := "1.6"
+java_version := $(shell echo '$(java_version_str)' | grep '^java .*[ "]1\.6[\. "$$]')
+javac_version := $(shell echo '$(javac_version_str)' | grep '[ "]1\.6[\. "$$]')
+endif # if LEGACY_USE_JAVA6
+
+ifeq ($(strip $(java_version)),)
+$(info ************************************************************)
+$(info You are attempting to build with the incorrect version)
+$(info of java.)
+$(info $(space))
+$(info Your version is: $(java_version_str).)
+$(info The required version is: $(required_version))
+$(info $(space))
+$(info Please follow the machine setup instructions at)
+$(info $(space)$(space)$(space)$(space)https://source.android.com/source/initializing.html)
+$(info ************************************************************)
+$(error stop)
+endif
+
+# Check for the current JDK.
+#
+# For Java 1.7, we require OpenJDK on linux and Oracle JDK on Mac OS.
+# For Java 1.6, we require Oracle for all host OSes.
+requires_openjdk := false
+ifeq ($(LEGACY_USE_JAVA6),)
+ifeq ($(HOST_OS), linux)
+requires_openjdk := true
+endif
+endif
+
+
+# Check for the current jdk
+ifeq ($(requires_openjdk), true)
+# The user asked for java7 openjdk, so check that the host
+# java version is really openjdk
+ifeq ($(shell echo '$(java_version_str)' | grep -i openjdk),)
+$(info ************************************************************)
+$(info You are attempting to build with an unsupported JDK.)
+$(info $(space))
+$(info This build requires OpenJDK, but you are using:)
+$(info $(java_version_str).)
+$(info Please follow the machine setup instructions at)
+$(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
+$(info ************************************************************)
+$(error stop)
+endif # java version is not OpenJdk
+else # if requires_openjdk
+ifneq ($(shell echo '$(java_version_str)' | grep -i openjdk),)
+>>>>>>> c84889b... Build with java7 by default.
 $(info ************************************************************)
 $(info You are attempting to build with an unsupported JDK.)
 $(info $(space))
@@ -150,6 +217,7 @@ $(info Please follow the machine setup instructions at)
 $(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
 $(info ************************************************************)
 $(error stop)
+<<<<<<< HEAD
 endif
 
 # Check for the correct version of java
@@ -167,6 +235,10 @@ $(info $(space)$(space)$(space)$(space)https://source.android.com/source/downloa
 $(info ************************************************************)
 $(error stop)
 endif
+=======
+endif # java version is not Sun Oracle JDK
+endif # if requires_openjdk
+>>>>>>> c84889b... Build with java7 by default.
 
 # Check for the correct version of javac
 javac_version := $(shell javac -version 2>&1 | head -n 1 | grep '[ "]1\.6[\. "$$]')

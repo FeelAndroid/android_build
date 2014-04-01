@@ -1297,7 +1297,22 @@ function godir () {
 
 # Force JAVA_HOME to point to java 1.6 if it isn't already set
 function set_java_home() {
+<<<<<<< HEAD
     if [ ! "$JAVA_HOME" ]; then
+=======
+    # Clear the existing JAVA_HOME value if we set it ourselves, so that
+    # we can reset it later, depending on the version of java the build
+    # system needs.
+    #
+    # If we don't do this, the JAVA_HOME value set by the first call to
+    # build/envsetup.sh will persist forever.
+    if [ -n "$ANDROID_SET_JAVA_HOME" ]; then
+      export JAVA_HOME=""
+    fi
+
+    if [ ! "$JAVA_HOME" ]; then
+      if [ -n "$LEGACY_USE_JAVA6" ]; then
+>>>>>>> c84889b... Build with java7 by default.
         case `uname -s` in
             Darwin)
                 export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home

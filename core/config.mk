@@ -354,10 +354,18 @@ endif
 OLD_FLEX := prebuilts/misc/$(HOST_PREBUILT_TAG)/flex/flex-2.5.4a$(HOST_EXECUTABLE_SUFFIX)
 
 ifeq ($(HOST_OS),darwin)
+<<<<<<< HEAD
 # Mac OS' screwy version of java uses a non-standard directory layout
 # and doesn't even seem to have tools.jar.  On the other hand, javac seems
 # to be able to magically find the classes in there, wherever they are, so
 # leave this blank
+=======
+ifeq ($(LEGACY_USE_JAVA6),)
+HOST_JDK_TOOLS_JAR:= $(shell $(BUILD_SYSTEM)/find-jdk-tools-jar.sh)
+else
+# Deliberately set to blank for Java 6 installations on MacOS. These
+# versions allegedly use a non-standard directory structure.
+>>>>>>> c84889b... Build with java7 by default.
 HOST_JDK_TOOLS_JAR :=
 else
 HOST_JDK_TOOLS_JAR:= $(shell $(BUILD_SYSTEM)/find-jdk-tools-jar.sh)
