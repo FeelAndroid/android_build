@@ -6,6 +6,8 @@
 #
 # Outputs:
 #   COMMON_JAVAC -- Java compiler command with common arguments
+<<<<<<< HEAD
+=======
 #
 
 ifneq ($(LEGACY_USE_JAVA6),)
@@ -20,6 +22,7 @@ JAVACC := javac
 else
 JAVACC := $(ALTERNATE_JAVAC)
 endif
+>>>>>>> c84889b... Build with java7 by default.
 
 # Whatever compiler is on this system.
 ifeq ($(BUILD_OS), windows)

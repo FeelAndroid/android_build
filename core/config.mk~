@@ -374,6 +374,7 @@ ifeq ($(wildcard $(HOST_JDK_TOOLS_JAR)),)
 $(error Error: could not find jdk tools.jar, please install JDK6, \
     which you can download from java.sun.com)
 endif
+endif
 
 # Is the host JDK 64-bit version?
 HOST_JDK_IS_64BIT_VERSION :=

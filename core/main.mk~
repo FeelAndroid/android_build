@@ -103,10 +103,11 @@ include $(BUILD_SYSTEM)/cleanbuild.mk
 # Include the google-specific config
 -include vendor/google/build/config.mk
 
+<<<<<<< HEAD
 VERSION_CHECK_SEQUENCE_NUMBER := 3
-
+=======
 VERSION_CHECK_SEQUENCE_NUMBER := 5
-
+>>>>>>> c84889b... Build with java7 by default.
 -include $(OUT_DIR)/versions_checked.mk
 ifneq ($(VERSION_CHECK_SEQUENCE_NUMBER),$(VERSIONS_CHECKED))
 
@@ -143,9 +144,10 @@ $(warning ************************************************************)
 $(error Directory names containing spaces not supported)
 endif
 
+<<<<<<< HEAD
 # Check for the corrent jdk
 ifneq ($(shell java -version 2>&1 | grep -i openjdk),)
-
+=======
 java_version_str := $(shell unset _JAVA_OPTIONS && java -version 2>&1)
 javac_version_str := $(shell unset _JAVA_OPTIONS && javac -version 2>&1)
 
@@ -206,7 +208,7 @@ $(error stop)
 endif # java version is not OpenJdk
 else # if requires_openjdk
 ifneq ($(shell echo '$(java_version_str)' | grep -i openjdk),)
-
+>>>>>>> c84889b... Build with java7 by default.
 $(info ************************************************************)
 $(info You are attempting to build with an unsupported JDK.)
 $(info $(space))
@@ -215,7 +217,7 @@ $(info Please follow the machine setup instructions at)
 $(info $(space)$(space)$(space)$(space)https://source.android.com/source/download.html)
 $(info ************************************************************)
 $(error stop)
-
+<<<<<<< HEAD
 endif
 
 # Check for the correct version of java
@@ -233,10 +235,10 @@ $(info $(space)$(space)$(space)$(space)https://source.android.com/source/downloa
 $(info ************************************************************)
 $(error stop)
 endif
-
+=======
 endif # java version is not Sun Oracle JDK
 endif # if requires_openjdk
-
+>>>>>>> c84889b... Build with java7 by default.
 
 # Check for the correct version of javac
 javac_version := $(shell javac -version 2>&1 | head -n 1 | grep '[ "]1\.6[\. "$$]')
